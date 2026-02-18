@@ -1,12 +1,30 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import Navbar from "@/components/Navbar";
+import HeroBanner from "@/components/HeroBanner";
+import MovieRow from "@/components/MovieRow";
+import MovieDetailModal from "@/components/MovieDetailModal";
+import { CATEGORY_QUERIES } from "@/lib/omdb";
 
 const Index = () => {
+  const [selectedMovie, setSelectedMovie] = useState<string | null>(null);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <main>
+        <HeroBanner onMoreInfo={setSelectedMovie} />
+        <div className="-mt-16 relative z-10 pt-4 space-y-2">
+          {CATEGORY_QUERIES.map((cat) => (
+            <MovieRow
+              key={cat.query}
+              title={cat.title}
+              query={cat.query}
+              onMovieClick={setSelectedMovie}
+            />
+          ))}
+        </div>
+      </main>
+      <MovieDetailModal imdbID={selectedMovie} onClose={() => setSelectedMovie(null)} />
     </div>
   );
 };
