@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: https://flick-lover-ui.lovable.app
+**URL**:https://flick-lover-ui-c6kd.vercel.app/
 
 ## How can I edit this code?
 
