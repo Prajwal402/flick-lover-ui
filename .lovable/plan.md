@@ -1,49 +1,58 @@
 
 
-# Netflix-Style Movie Browser 🎬
+# Netflix-Style Authentication System (Login and Signup)
 
 ## Overview
-A sleek, Netflix-inspired movie browsing app with a dark black & red theme, featuring a hero banner, horizontal scrolling movie rows, and smooth hover animations — all powered by the OMDB API.
+Add Netflix-inspired Login and Signup pages with a dark theme matching the existing movie browser. Since no backend is connected, this will use **local storage mock authentication** that simulates the full flow -- it can be upgraded to real Supabase auth later.
 
-## Design & Theme
-- **Dark theme**: Deep black background with Netflix-signature red accents
-- **Typography**: Bold, clean fonts for titles and descriptions
-- **Fully responsive**: Optimized for mobile, tablet, and desktop
+## What You Will Get
 
-## Key Features
+### Login Page (`/login`)
+- Netflix-style dark page with the MOVIEFLIX logo
+- Semi-transparent card over a dark/blurred movie backdrop
+- Email and Password fields
+- "Sign In" button with red Netflix-style styling
+- Link to Sign Up page
+- Form validation (email format, password minimum length)
 
-### 1. Navigation Bar
-- Netflix-style top navbar with logo/brand name
-- Fixed position with transparent-to-dark scroll effect
+### Signup Page (`/signup`)
+- Same Netflix-style layout
+- Fields: Username, Email, Password, Phone
+- Client-side validation for all fields
+- Passwords are hashed (using a browser-safe hashing approach) before storing in local storage
+- Link to Login page
 
-### 2. Hero Banner
-- Large featured movie section with backdrop image
-- Movie title, description, and "Play" / "More Info" buttons
-- Gradient overlay for text readability
+### Auth Flow
+- On signup: validate inputs, hash password, store user in local storage, redirect to `/`
+- On login: validate credentials against stored users, generate a mock JWT-like token, store in local storage, redirect to `/`
+- Protected routes: the movie dashboard (`/`) redirects to `/login` if not authenticated
+- Logout button in the Navbar
 
-### 3. Movie Category Rows
-- Horizontal scrollable rows for each category:
-  - **Trending Now**
-  - **Popular**
-  - **Top Rated**
-  - **Action**
-  - **Drama**
-- Each row populated using curated OMDB API search queries
+### New Files
+- `src/lib/auth.ts` -- auth utilities (mock user storage, password hashing with Web Crypto API, token generation, login/signup logic)
+- `src/contexts/AuthContext.tsx` -- React context for auth state management
+- `src/pages/Login.tsx` -- Netflix-style login page
+- `src/pages/Signup.tsx` -- Netflix-style signup page
+- `src/components/ProtectedRoute.tsx` -- route wrapper that redirects unauthenticated users
 
-### 4. Movie Cards
-- Poster image display
-- Hover animation: scale up + shadow + slight z-index lift
-- Smooth CSS transitions
-- Click to view movie details
+### Modified Files
+- `src/App.tsx` -- add routes for `/login` and `/signup`, wrap app in AuthProvider, protect the home route
+- `src/components/Navbar.tsx` -- add user greeting and logout button
 
-### 5. Movie Detail Modal
-- Opens on card click showing:
-  - Full poster, title, year, rating
-  - Plot summary, genre, director, actors
-  - Smooth fade-in animation
+## Technical Details
 
-### 6. Data Integration
-- OMDB API integration using the provided API key
-- Curated keyword searches to populate each category row
-- Loading skeletons while data fetches
+### Password Security (Browser-Safe)
+Since there is no backend, bcrypt cannot be used directly. Instead, passwords will be hashed using the browser's built-in **Web Crypto API** (SHA-256 with a salt), which is the most secure option available client-side. This is suitable for demo/prototype purposes.
+
+### Mock JWT Token
+A base64-encoded JSON object with user info and expiry, stored in local storage. This simulates JWT behavior for the redirect flow.
+
+### Validation Rules
+- **Email**: Must be valid email format (zod validation)
+- **Password**: Minimum 6 characters
+- **Username**: Required, 2-30 characters
+- **Phone**: Optional, basic format check
+
+### Important Note
+This is a **frontend-only mock** authentication. For production use with real bcrypt hashing and JWT tokens, you would need to connect Lovable Cloud or Supabase -- I can help upgrade when you are ready.
 
