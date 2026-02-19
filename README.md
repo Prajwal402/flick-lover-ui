@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/6c2d7bab-f901-42a2-b2c2-ac1a8ca2efa1
+**URL**: https://flick-lover-ui.lovable.app
 
 ## How can I edit this code?
 
